@@ -15,9 +15,11 @@ for USER in $(cat user.list);do
 NAME=$(echo $USER|awk -F"|" '{print $1}')
 PASS=$(echo $USER|awk -F"|" '{print $2}')
 ./user_login.sh $NAME $PASS
+./get_amount.sh $NAME
 FILE_NAME=$(ls cookies/|grep $NAME|tail -n 1)
 COOKIE_FILE="cookies/$FILE_NAME"
 ./process_bid.sh $FILE_NAME $CAR_ID &
 done
 done
+
 echo $(date "+%Y%m%d %H:%M:%S.%N")" $SCRIPT:Exit"

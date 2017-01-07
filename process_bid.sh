@@ -24,6 +24,11 @@ echo "car $2 not in the list"
 exit
 fi
 
+if [ "$AMOUNT" == "" ];then
+echo "session $1 get money error"
+exit
+fi
+
 echo $(date "+%Y%m%d %H:%M:%S.%N")" $SCRIPT:Waiting for tigger loop, session=$1, car_id=$2"
 while [ 1 -eq 1 ];do
 if [ -f tigger/$2 ];then
