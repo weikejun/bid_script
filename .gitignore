@@ -1,8 +1,7 @@
-#log/*
-#captcha/*.gif
-#captcha/*.res
-#captcha/archives/*
-#http/*
-#cookies/*
-#tigger/*
-#amount/*
+log/*
+cookies/*
+http/*
+amount/*
+tigger/*
+*.list*
+sess.map
