@@ -1,2 +1,2 @@
-# bid_script
-bid script
+# rongche 
+hello world
