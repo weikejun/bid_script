@@ -31,7 +31,7 @@
 </div>
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
-    <h3>验证码输入</h3>
+    <h3>验证码输入(计时：<span id="countdown">0</span> 秒)</h3>
     <hr>
     <form method="post" class="am-form" action="submit.php">
 <?php
@@ -55,5 +55,11 @@ foreach($files as $f) {
     <p>© 2016 Jimwei </p>
   </div>
 </div>
+<script>
+var countTime = 0;
+var timer = setInterval(function() {
+		document.getElementById('countdown').innerHTML = ++countTime;
+		}, 1000);
+</script>
 </body>
 </html>
