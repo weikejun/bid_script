@@ -23,3 +23,19 @@ doLog "Clear $dir start"
 doClear "$dir" 1800
 doLog "Clear $dir done"
 done
+
+doLog "Clear http start"
+doClear "http" 86400
+doLog "Clear http done"
+
+for f in $(ls captcha|egrep ".gif|.res"|xargs);do
+LASTMO=$(date -d "$(stat captcha/$f|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
+LASTMO=$(($LASTMO + 1800))
+if [ $(date +%s) -gt $LASTMO ];then
+	CMD="mv -f captcha/$f captcha/archives"
+	echo $CMD
+	eval $CMD
+fi
+done
+
+doLog "Exit"

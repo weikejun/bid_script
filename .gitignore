@@ -5,4 +5,6 @@ amount/*
 tigger/*
 *.list*
 sess.map
-captcha/*
+captcha/*.gif
+captcha/*.res
+captcha/archives/*
