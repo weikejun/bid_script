@@ -8,20 +8,20 @@ function doClear() {
 DIR=$1
 EXPIRE=$2
 for f in $(ls $DIR|xargs);do
-LASTMO=$(date -d "$(stat $DIR/$f|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
-LASTMO=$(($LASTMO + $EXPIRE))
-if [ $(date +%s) -gt $LASTMO ];then
-	CMD="rm -f $DIR/$f"
-	echo $CMD
-	eval $CMD
-fi
+	LASTMO=$(date -d "$(stat $DIR/$f|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
+	LASTMO=$(($LASTMO + $EXPIRE))
+	if [ $(date +%s) -gt $LASTMO ];then
+		CMD="rm -f $DIR/$f"
+		echo $CMD
+		eval $CMD
+	fi
 done
 }
 
 for dir in $(echo "cookies amount tigger");do
-doLog "Clear $dir start"
-doClear "$dir" 1800
-doLog "Clear $dir done"
+	doLog "Clear $dir start"
+	doClear "$dir" 1800
+	doLog "Clear $dir done"
 done
 
 doLog "Clear http start"
@@ -29,13 +29,13 @@ doClear "http" 86400
 doLog "Clear http done"
 
 for f in $(ls captcha|egrep ".gif|.res"|xargs);do
-LASTMO=$(date -d "$(stat captcha/$f|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
-LASTMO=$(($LASTMO + 1800))
-if [ $(date +%s) -gt $LASTMO ];then
-	CMD="mv -f captcha/$f captcha/archives"
-	echo $CMD
-	eval $CMD
-fi
+	LASTMO=$(date -d "$(stat captcha/$f|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
+	LASTMO=$(($LASTMO + 1800))
+	if [ $(date +%s) -gt $LASTMO ];then
+		CMD="mv -f captcha/$f captcha/archives"
+		echo $CMD
+		eval $CMD
+	fi
 done
 
 doLog "Exit"

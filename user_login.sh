@@ -5,8 +5,8 @@ source common.sh
 doLog "Start"
 
 if [ $# != 2 ];then
-echo "Usage: $(basename $0) [USERNAME] [PASSWORD]"
-exit
+	echo "Usage: $(basename $0) [USERNAME] [PASSWORD]"
+	exit
 fi
 
 USER=$1

@@ -5,16 +5,16 @@ source common.sh
 doLog "Start"
 
 if [ $# != 1 ];then
-echo "Usage: $SCRIPT [USERNAME]"
-exit
+	echo "Usage: $SCRIPT [USERNAME]"
+	exit
 fi
 
 USER=$1
 COOKIE_FILE="cookies/$(ls cookies/|grep $USER|tail -n 1)"
 
 if [ ! -f $COOKIE_FILE ];then
-doLog "User $USER not login"
-exit
+	doLog "User $USER not login"
+	exit
 fi
 
 doLog "InsideTwo.aspx request, User $USER get amount"
