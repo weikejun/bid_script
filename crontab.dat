@@ -6,5 +6,5 @@
 59 8,15 * * 1,2,3,4,5 (cd /usr/local/apps/rongche;./create_listeners.sh >> log/$(date +\%Y\%m\%d))
 59 8,14 * * 6 (cd /usr/local/apps/rongche;./create_listeners.sh >> log/$(date +\%Y\%m\%d))
 # 开始标志获取
-59 8,15 * * 1,2,3,4,5 (sleep 40;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))
-59 8,14 * * 6 (sleep 40;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))
+59 8,15 * * 1,2,3,4,5 (sleep 55;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))
+59 8,14 * * 6 (sleep 55;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))

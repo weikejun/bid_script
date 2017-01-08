@@ -37,11 +37,13 @@
 <?php
 $dir = dirname(__FILE__);
 $files = scandir($dir);
+$show = 0;
 foreach($files as $f) {
 	$finfo = pathinfo($f);
 	if($finfo['extension'] == 'gif') {
 		$flmtm = filemtime($f);
 		if(date('Ymd', $flmtm) == date('Ymd')) {
+			$show++;
 ?>
       <label for="captcha[<?php echo $finfo['filename']; ?>]"><img src="<?php echo $f;?>"></label>
       <input type="text" name="captcha[<?php echo $finfo['filename']; ?>]" id="captcha[<?php echo $finfo['filename']; ?>]" value="">
