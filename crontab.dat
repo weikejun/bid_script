@@ -1,5 +1,5 @@
 # 垃圾清理程序
-* * * * * (cd /usr/local/apps/rongche;./clearGar.sh >> log/clear_$(date +\%Y\%m\%d))
+* * * * * (cd /usr/local/apps/rongche;./clear_gar.sh >> log/clear_$(date +\%Y\%m\%d))
 # 取得车辆列表
 */5 * * * * (cd /usr/local/apps/rongche;./get_car_list.sh >> log/$(date +\%Y\%m\%d))
 # 抢标监听进程
