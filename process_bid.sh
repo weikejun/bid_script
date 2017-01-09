@@ -52,17 +52,23 @@ TIMESTAMP=$(date +%s)$(expr $(date +%N) / 1000000);
 curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Resource/Scripts/Common/VerifyCodeNum.aspx?time=$TIMESTAMP" -H "Host: www.zhongchoucar.com" -H 'Pragma: no-cache' -H 'Accept-Encoding: gzip, deflate, sdch' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Accept: image/webp,*/*;q=0.8' -H "Referer: http://www.zhongchoucar.com$URI" -H 'Connection: keep-alive' -H 'Cache-Control: no-cache' --compressed -o "captcha/$1_$2.gif"
 doLog "VerifyCodeNum.aspx response: captcha/$1_$2.gif create"
 
+doLog "Waiting for captcha input, session=$1, car_id=$2"
+while [ 1 -eq 1 ];do
+	if [ -f captcha/$1_$2.res ];then
+		CAPTCHA=$(cat captcha/$1_$2.res|sed -r "s/\s+//g")
+		break
+	fi
+done
+doLog "Captcha input ok, code=$CAPTCHA"
+
 TIGGER=$(cat tigger/$2)
 doLog "Waiting for submitting, tigger: $TIGGER"
 while [ 1 -eq 1 ];do
 	TIMESTAMP=$(date +%s)$(expr $(date +%N) / 1000000);
 	if [ $TIMESTAMP -ge $TIGGER ];then
-		if [ -f captcha/$1_$2.res ];then
-			CAPTCHA=$(cat captcha/$1_$2.res|sed -r "s/\s+//g")
-			doLog "ValSpeed.ashx request: captcha=$CAPTCHA"
-			curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Info/T493000657/Front/InsideTwo/Ajax/ValSpeed.ashx" -H 'Pragma: no-cache' -H 'Origin: http://www.zhongchoucar.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -H 'Accept: */*' -H 'Cache-Control: no-cache' -H 'X-Requested-With: XMLHttpRequest' -H 'Connection: keep-alive' -H "Referer: http://www.zhongchoucar.com$URI" --data "touMoney=$AMOUNT&payPwd=wkj12345678&imageYanMa=$CAPTCHA&standardId=$2&sensePwd=" --compressed -i -o "http/valspeed_$1_$2"
-			doLog "ValSpeed.ashx response"
-		fi
+		doLog "ValSpeed.ashx request: captcha=$CAPTCHA"
+		curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Info/T493000657/Front/InsideTwo/Ajax/ValSpeed.ashx" -H 'Host: www.zhongchoucar.com' -H 'Pragma: no-cache' -H 'Origin: http://www.zhongchoucar.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -H 'Accept: */*' -H 'Cache-Control: no-cache' -H 'X-Requested-With: XMLHttpRequest' -H 'Connection: keep-alive' -H "Referer: http://www.zhongchoucar.com$URI" --data "touMoney=$AMOUNT&payPwd=wkj12345678&imageYanMa=$CAPTCHA&standardId=$2&sensePwd=" --compressed -i -o "http/valspeed_$1_$2"
+		doLog "ValSpeed.ashx response"
 		break
 	fi
 done

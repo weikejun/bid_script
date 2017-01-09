@@ -11,7 +11,7 @@ fi
 
 USER=$1
 PASS=$2
-COOKIE_FILE="cookies/$USER""_$(date +%s)"
+COOKIE_FILE="cookies/$USER""_$(date +%s%N)"
 HTTP_FILE="http/user_login_$USER.http"
 
 doLog "Login_Handler.ashx request, User $USER login"
