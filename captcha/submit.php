@@ -42,6 +42,8 @@ if(isset($_POST['captcha'])) {
 		file_put_contents($fname.'.res', $capVal);
 		echo date('Ymd H:i:s').' Create file '.$fname.".res, <img src='$fname.gif' /> $capVal\n";
 	}
+} else {
+	echo 'no captcha submit';
 }
 echo '</pre><a href="actLog.php">查看日志</a>&nbsp;&nbsp;<a href="input.php">重新输入</a>';
 ?>

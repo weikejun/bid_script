@@ -31,9 +31,9 @@
 </div>
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
-    <h3>验证码输入(计时：<span id="countdown">0</span> 秒)</h3>
+    <h3>验证码输入(时间:<span id="now_time">--:--:--</span>&nbsp;&nbsp;提交倒计时:<span id="countdown">--</span>)</h3>
     <hr>
-    <form method="post" class="am-form" action="submit.php">
+    <form id="sub_form" method="post" class="am-form" action="submit.php">
 <?php
 $dir = dirname(__FILE__);
 $files = scandir($dir);
@@ -46,7 +46,7 @@ foreach($files as $f) {
 			$show++;
 ?>
       <label for="captcha[<?php echo $finfo['filename']; ?>]"><img src="<?php echo $f;?>"></label>
-      <input type="text" name="captcha[<?php echo $finfo['filename']; ?>]" id="captcha[<?php echo $finfo['filename']; ?>]" value="">
+      <input autocomplete="off" type="text" name="captcha[<?php echo $finfo['filename']; ?>]" id="captcha[<?php echo $finfo['filename']; ?>]" value="">
       <br>
 <?php }}} ?>
       <div class="am-cf">
@@ -58,10 +58,33 @@ foreach($files as $f) {
   </div>
 </div>
 <script>
-var countTime = 0;
-var timer = setInterval(function() {
-		document.getElementById('countdown').innerHTML = ++countTime;
-		}, 1000);
+var show = <?php echo $show; ?>;
+setInterval(function() {
+	var dt = new Date();
+	document.getElementById('now_time').innerHTML = dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
+}, 1000);
+var countTime = 10 - (new Date().getSeconds());
+if(countTime > 3 && show > 0) {
+	var timer = setInterval(function() {
+		document.getElementById('countdown').innerHTML = --countTime;
+		if(countTime == 0) {
+			clearInterval(timer);
+			timer = null;
+			document.getElementById('sub_form').submit();
+		}
+	}, 1000);
+} else {
+	var refreshTimer = setInterval(function() {
+		var dt = new Date();
+		if(dt.getSeconds() >= 0 && dt.getSeconds() <= 3) {
+			clearInterval(refreshTimer);
+			refreshTimer = null;
+			setTimeout(function() {
+				location.reload();
+			}, 500);
+		}
+	}, 10);
+}
 </script>
 </body>
 </html>
