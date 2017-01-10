@@ -38,4 +38,16 @@ for f in $(ls captcha|egrep ".gif|.res"|xargs);do
 	fi
 done
 
+doLog "Clear process start"
+for p in $(ps -ef|grep "process_bid"|grep -v "grep"|awk '{print $2}');do
+	STARTED=$(date -d "$(ps -p $p -o lstart|grep -v -i STARTED)" +%s)
+	ELAPSED=$(($(date +%s) - $STARTED))
+	if [ $ELAPSED -gt 180 ];then
+		CMD="kill $p"
+		echo $CMD
+		eval $CMD
+	fi
+done
+doLog "Clear process done"
+
 doLog "Exit"
