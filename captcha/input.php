@@ -43,10 +43,14 @@ foreach($files as $f) {
 	if($finfo['extension'] == 'gif') {
 		$flmtm = filemtime($f);
 		if(date('Ymd', $flmtm) == date('Ymd')) {
+			$capCode = '';
+			if(file_exists($finfo['filename'].'.res')) {
+				$capCode = file_get_contents($finfo['filename'].'.res');
+			}
 			$show++;
 ?>
       <label for="captcha[<?php echo $finfo['filename']; ?>]"><img src="<?php echo $f;?>"></label>
-      <input autocomplete="off" type="text" name="captcha[<?php echo $finfo['filename']; ?>]" id="captcha[<?php echo $finfo['filename']; ?>]" value="">
+      <input autocomplete="off" type="text" name="captcha[<?php echo $finfo['filename']; ?>]" id="captcha[<?php echo $finfo['filename']; ?>]" value="<?php echo $capCode; ?>">
       <br>
 <?php }}} ?>
       <div class="am-cf">

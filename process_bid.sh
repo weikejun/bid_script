@@ -40,7 +40,7 @@ doLog "Tigger capture"
 doLog "ContrastMoney_Handler.ashx request: touMoney=$AMOUNT&standardId=$2"
 curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Info/T493000657/Front/InsideTwo/Ajax/ContrastMoney_Handler.ashx" -H "Host: www.zhongchoucar.com" -H 'Pragma: no-cache' -H 'Origin: http://www.zhongchoucar.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -H 'Accept: */*' -H 'Cache-Control: no-cache' -H 'X-Requested-With: XMLHttpRequest' -H 'Connection: keep-alive' -H "Referer: http://www.zhongchoucar.com$URI" --data "touMoney=$AMOUNT&standardId=$2" --compressed -i -o "http/contrast_money_$1_$2"
 RET=$(cat http/contrast_money_$1_$2|egrep "^[-0-9]+"|sed -r "s/\s+//g")
-doLog "ContrastMoney_Handler.ashx response: $RET"
+doLog "ContrastMoney_Handler.ashx response=$RET, session=$1, car_id=$2"
 
 if [ "$(echo $RET|grep '&0')" == "" ];then
 	doLog "Exit" 
@@ -59,17 +59,17 @@ while [ 1 -eq 1 ];do
 		break
 	fi
 done
-doLog "Captcha input ok, code=$CAPTCHA"
+doLog "Captcha input ok, code=$CAPTCHA, session=$1, car_id=$2"
 
 TIGGER=$(cat tigger/$2)
-doLog "Waiting for submitting, tigger: $TIGGER"
+doLog "Waiting for submitting, tigger=$TIGGER, session=$1, car_id=$2"
 while [ 1 -eq 1 ];do
 	TIMESTAMP=$(date +%s)$(expr $(date +%N) / 1000000);
 	if [ $TIMESTAMP -ge $TIGGER ];then
 		doLog "ValSpeed.ashx request: captcha=$CAPTCHA"
 		curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Info/T493000657/Front/InsideTwo/Ajax/ValSpeed.ashx" -H 'Host: www.zhongchoucar.com' -H 'Pragma: no-cache' -H 'Origin: http://www.zhongchoucar.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -H 'Accept: */*' -H 'Cache-Control: no-cache' -H 'X-Requested-With: XMLHttpRequest' -H 'Connection: keep-alive' -H "Referer: http://www.zhongchoucar.com$URI" --data "touMoney=$AMOUNT&payPwd=wkj12345678&imageYanMa=$CAPTCHA&standardId=$2&sensePwd=" --compressed -i -o "http/valspeed_$1_$2"
 		RET=$(cat http/valspeed_$1_$2|egrep "^[-0-9]+"|sed -r "s/\s+//g")
-		doLog "ValSpeed.ashx response: $RET"
+		doLog "ValSpeed.ashx response=$RET, session=$1, car_id=$2"
 		break
 	fi
 done

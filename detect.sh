@@ -19,11 +19,15 @@ while [ 1 -eq 1 ];do
 	FLAG=$(cat $TMFILE|grep -i "HTTP/1.1 200")
 
 	if [ "$FLAG" != "" ];then
-		COUNTDOWN=$(awk -F'"' '/^{.+}$/{print $4}' $TMFILE)
-		ADJUST=$(awk -F'=' '/^total elapse/{print $2}' $TMFILE)
-		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2*1000-$3*1000}')
+		COUNTDOWN=$(awk -F'"' '/^{.+}$/{print $4*1000}' $TMFILE)
+		ADJUST=$(awk -F'=' '/^total elapse/{print $2*1000}' $TMFILE)
+		if [ $ADJUST -gt 100 ];then
+			doLog "GetDateTime elapse=$ADJUST too long, retry"
+			continue
+		fi
+		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2-$3}')
 		echo $TIGGER > tigger/$1
-		doLog "GetDateTime tigger create, tigger_time=$TIGGER"
+		doLog "GetDateTime tigger create, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER"
 		break
 	else
 		[ -f tigger/$1 ] && rm tigger/$1

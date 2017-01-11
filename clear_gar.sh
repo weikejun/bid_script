@@ -25,7 +25,7 @@ for dir in $(echo "cookies amount tigger");do
 done
 
 doLog "Clear http start"
-doClear "http" 86400
+doClear "http" 172800
 doLog "Clear http done"
 
 for f in $(ls captcha|egrep ".gif|.res"|xargs);do
