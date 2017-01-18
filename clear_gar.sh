@@ -24,9 +24,11 @@ for dir in $(echo "cookies amount tigger");do
 	doLog "Clear $dir done"
 done
 
-doLog "Clear http start"
-doClear "http" 172800
-doLog "Clear http done"
+for dir in $(echo "http log");do
+	doLog "Clear $dir start"
+	doClear "$dir" 172800
+	doLog "Clear $dir done"
+done
 
 for f in $(ls captcha|egrep ".gif|.res"|xargs);do
 	LASTMO=$(date -d "$(stat captcha/$f|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
