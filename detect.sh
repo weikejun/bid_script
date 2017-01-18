@@ -22,7 +22,7 @@ while [ 1 -eq 1 ];do
 	if [ "$FLAG" != "" ];then
 		COUNTDOWN=$(awk -F'"' '/^{.+}$/{print $4*1000}' $TMFILE)
 		ADJUST=$(awk -F'=' '/^total elapse/{print $2*1000}' $TMFILE)
-		if [ $ADJUST -gt 100 ];then
+		if [ $ADJUST -gt 150 ];then
 			doLog "GetDateTime elapse=$ADJUST too long, retry"
 			continue
 		fi
