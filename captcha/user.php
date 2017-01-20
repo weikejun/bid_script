@@ -38,8 +38,9 @@
 $file = dirname(dirname(__FILE__)).'/user.list';
 $userStr = '';
 if($_POST['users']) {
-	file_put_contents($file, trim($_POST['users']));
+	$output = file_put_contents($file, trim($_POST['users']));
 	$userStr = trim($_POST['users']);
+	echo "<script>alert('".($output !== false ? "success" : "failed")."');location.href = location;</script>";
 }
 else {
 	$lines = null;
