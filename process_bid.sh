@@ -17,7 +17,7 @@ fi
 COOKIE_FILE="cookies/$1"
 URI=$(cat car.list|grep $2|awk -F"|" '{print $2}')
 AMOUNT=$(cat amount/$(echo $1|awk -F"_" '{print $1}'))
-REMOTE_ADDR="42.96.184.3"
+REMOTE_ADDR=$(nslookup www.zhongchoucar.com|grep Address|grep -v "#53"|awk '{print $2}')
 
 if [ "$URI" == "" ];then
 	echo "car $2 not in the list"
