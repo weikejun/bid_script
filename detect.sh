@@ -12,6 +12,8 @@ fi
 TMFILE="http/detect_start_$1.http"
 
 doLog "GetDateTime loop start, car_id=$1"
+COUNTDOWN_LAST=-1
+TIGGER_MIN=1999999999999
 while [ 1 -eq 1 ];do
 	NS=$(date +%N)
 	START_TIME=$(date +%s)${NS:0:3}
@@ -22,14 +24,28 @@ while [ 1 -eq 1 ];do
 	if [ "$FLAG" != "" ];then
 		COUNTDOWN=$(awk -F'"' '/^{.+}$/{print $4*1000}' $TMFILE)
 		ADJUST=$(awk -F'=' '/^total elapse/{print $2*1000}' $TMFILE)
-		if [ $ADJUST -gt 150 ];then
+		if [ $ADJUST -gt 100 ];then
 			doLog "GetDateTime elapse=$ADJUST too long, retry"
 			continue
 		fi
-		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2-100+$3}')
-		echo $TIGGER > tigger/$1
-		doLog "GetDateTime tigger create, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER"
-		break
+		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2}')
+		if [ $TIGGER -lt $TIGGER_MIN ];then
+			TIGGER_MIN=$TIGGER
+			echo $TIGGER_MIN > tigger/$1
+		fi
+		if [ $COUNTDOWN_LAST -eq -1 ];then
+			COUNTDOWN_LAST=$COUNTDOWN
+			doLog "GetDateTime tigger create, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER_MIN"
+			continue;
+		else
+			if [ $COUNTDOWN_LAST -gt $COUNTDOWN ];then
+				doLog "GetDateTime tigger refine done, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER_MIN"
+				break;
+			elif [ $COUNTDOWN -lt 9000 ];then
+				doLog "GetDateTime tigger refine exception, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER_MIN"
+				break;
+			fi
+		fi
 	else
 		[ -f tigger/$1 ] && rm tigger/$1
 	fi
