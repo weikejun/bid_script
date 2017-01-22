@@ -5,7 +5,7 @@ source common.sh
 doLog "Start"
 
 if [ $# != 1 ];then
-	echo "Usage: $SCRIPT [USERNAME]"
+	doLog "Usage: $SCRIPT [USERNAME]"
 	exit
 fi
 

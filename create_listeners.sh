@@ -5,7 +5,7 @@ source common.sh
 doLog "Start"
 
 if [ ! -f car.list ];then
-	echo 'car.list not exists'
+	doLog 'car.list not exists'
 	exit
 fi
 

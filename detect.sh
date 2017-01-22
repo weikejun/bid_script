@@ -5,7 +5,7 @@ source common.sh
 doLog "Start"
 
 if [ $# != 1 ];then
-	echo "Usage: $SCRIPT [CAR_ID]"
+	doLog "Usage: $SCRIPT [CAR_ID]"
 	exit
 fi
 
@@ -16,8 +16,8 @@ doLog "GetDateTime loop start, car_id=$1"
 COUNTDOWN_LAST=-1
 TIGGER_MIN=1999999999999
 while [ 1 -eq 1 ];do
-	NS=$(date +%N)
-	START_TIME=$(date +%s)${NS:0:3}
+	NS=$(date +%s%N)
+	START_TIME=${NS:0:13}
 	curl "http://$REMOTE_ADDR/Info/T493000657/Front/InsideTwo/InsideTwo.aspx/GetDateTime" -H 'Host: www.zhongchoucar.com' -H 'Pragma: no-cache' -H 'Origin: http://www.zhongchoucar.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Content-Type: application/json; charset=UTF-8' -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Cache-Control: no-cache' -H 'X-Requested-With: XMLHttpRequest' -H 'Connection: keep-alive' -w "\ntotal elapse="%{time_total}"\n" --data-binary "{\"sid\":\"$1\"}" --compressed -i > $TMFILE
 
 	FLAG=$(cat $TMFILE|grep -i "HTTP/1.1 200")
@@ -29,7 +29,7 @@ while [ 1 -eq 1 ];do
 			doLog "GetDateTime elapse=$ADJUST too long, retry"
 			continue
 		fi
-		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2}')
+		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2+$3/2}')
 		if [ $TIGGER -lt $TIGGER_MIN ];then
 			TIGGER_MIN=$TIGGER
 			echo $TIGGER_MIN > tigger/$1
