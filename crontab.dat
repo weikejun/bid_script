@@ -1,3 +1,4 @@
+# --融车抢标任务集合
 # 垃圾清理程序
 * * * * * (cd /usr/local/apps/rongche;./clear_gar.sh >> log/clear_$(date +\%Y\%m\%d))
 # 取得车辆列表
@@ -8,3 +9,6 @@
 # 开始标志获取
 59 8,15 * * 1,2,3,4,5 (sleep 55;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))
 59 8,14 * * 6 (sleep 55;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))
+# 抢车提醒
+45 8,14,15 * * * (cd /usr/local/apps/rongche;./notify.sh >> log/$(date +\%Y\%m\%d))
+# --融车抢标任务集合
