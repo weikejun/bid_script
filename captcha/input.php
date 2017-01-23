@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -26,69 +27,71 @@
 </head>
 <body>
 <div class="header">
-  
+
   <hr />
 </div>
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
-    <h3>验证码输入(时间:<span id="now_time">--:--:--</span>&nbsp;&nbsp;提交倒计时:<span id="countdown">--</span>)</h3>
+    <h3>验证码输入(时间:<span id="now_time">--:--:--</span>&nbsp;&nbsp;提交倒计时:<span id="countdown">12</span>)</h3>
     <hr>
     <form id="sub_form" method="post" class="am-form" action="submit.php">
-<?php
-$dir = dirname(__FILE__);
-$files = scandir($dir);
-$show = 0;
-foreach($files as $f) {
-	$finfo = pathinfo($f);
-	if($finfo['extension'] == 'gif') {
-		$flmtm = filemtime($f);
-		if(date('Ymd', $flmtm) == date('Ymd')) {
-			$capCode = '';
-			if(file_exists($finfo['filename'].'.res')) {
-				$capCode = file_get_contents($finfo['filename'].'.res');
-			}
-			$show++;
-?>
-      <label for="captcha[<?php echo $finfo['filename']; ?>]"><img src="<?php echo $f;?>"></label>
-      <input autocomplete="off" type="text" name="captcha[<?php echo $finfo['filename']; ?>]" id="captcha[<?php echo $finfo['filename']; ?>]" value="<?php echo $capCode; ?>">
-      <br>
-<?php }}} ?>
+      <div id="inputs"></div>
       <div class="am-cf">
-        <input type="submit" name="" value="提 交" class="am-btn am-btn-primary am-btn-sm am-fl">
+	<input type="submit" name="" value="提 交" class="am-btn am-btn-primary am-btn-sm am-fl">
       </div>
     </form>
     <hr>
     <p>© 2016 Jimwei </p>
   </div>
 </div>
+<script src="/captcha/jquery-3.1.1.min.js"></script>
 <script>
-var show = <?php echo $show; ?>;
+var srvTime = 0;
+var inputTpl = '<label id="lable_captcha[$FILE_NAME$]" for="captcha[$FILE_NAME$]"><img id="img_captcha[$FILE_NAME$]" src="$IMG_SRC$"></label><input autocomplete="off" type="text" name="captcha[$FILE_NAME$]" id="captcha[$FILE_NAME$]" value="$CAP_CODE$" onblur="blurSubmit(this);"><br>';
+var startCount = 0;
+function blurSubmit(inst) {
+	$.ajax({
+		url: "/captcha/singleSub.php?"+$(inst).attr('id')+"="+$(inst).val(),
+			type: "GET",
+			success: function(data) {}
+	});	
+};
+(syncSrvDate = function() {
+	$.ajax({
+		url: "/captcha/syncCap.php?srv_t=" + srvTime,
+			type: "GET",
+			dataType: "json",
+			success: function(data, status, xhr) {
+				if(data.res > 0) {
+					for(i = 0; i < data.res; i++) {
+						idStr = $.escapeSelector("captcha["+data.caps[i].file_name+"]"); 
+						if($("#"+idStr).length > 0) {
+							$("#img_"+idStr).attr("src", data.caps[i].img_src+"?_="+Math.random());
+							$("#"+idStr).val("");
+
+						} else {
+							$("#inputs").append(inputTpl.replace(/\$IMG_SRC\$/g, data.caps[i].img_src).replace(/\$CAP_CODE\$/g, data.caps[i].cap_code).replace(/\$FILE_NAME\$/g, data.caps[i].file_name));
+						}
+					}		
+					startCount || setInterval(function() {
+						startCount = 1;
+						tick = $("#countdown").html() - 1;
+						$("#countdown").html(tick);
+						tick == 0 && $('#sub_form').submit();
+					}, 1000);
+				}
+				srvTime = data.srv_t;
+				setTimeout(function() {
+					syncSrvDate();
+				}, 1000);
+			}
+	})
+})();
 setInterval(function() {
 	var dt = new Date();
-	document.getElementById('now_time').innerHTML = dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
+	$('#now_time').html(dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds());
 }, 1000);
-var countTime = 10 - (new Date().getSeconds());
-if(countTime > 3 && show > 0) {
-	var timer = setInterval(function() {
-		document.getElementById('countdown').innerHTML = --countTime;
-		if(countTime == 0) {
-			clearInterval(timer);
-			timer = null;
-			document.getElementById('sub_form').submit();
-		}
-	}, 1000);
-} else {
-	var refreshTimer = setInterval(function() {
-		var dt = new Date();
-		if(dt.getSeconds() >= 0 && dt.getSeconds() <= 3) {
-			clearInterval(refreshTimer);
-			refreshTimer = null;
-			setTimeout(function() {
-				location.reload();
-			}, 500);
-		}
-	}, 10);
-}
 </script>
 </body>
 </html>
+
