@@ -7,7 +7,12 @@ doLog "Start"
 USER_MAP=(
 "xxxwkj|wkj12345678"
 "sangsangdong|bababu523"
+"jimdev|wkj12345678"
 )
+
+source user_map.sh
+
+echo $USER_MAP
 
 USER_NUM=${#USER_MAP[*]}
 MAIL=""
