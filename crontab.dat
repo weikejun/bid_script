@@ -4,11 +4,9 @@
 # 取得车辆列表
 3-59/9 * * * * (cd /usr/local/apps/rongche;./get_car_list.sh >> log/$(date +\%Y\%m\%d))
 # 抢标监听进程
-59 8,15 * * 1,2,3,4,5 (cd /usr/local/apps/rongche;./create_listeners.sh >> log/$(date +\%Y\%m\%d))
-59 8,14 * * 6 (cd /usr/local/apps/rongche;./create_listeners.sh >> log/$(date +\%Y\%m\%d))
+59 8,14,15 * * * (cd /usr/local/apps/rongche;./create_listeners.sh >> log/$(date +\%Y\%m\%d))
 # 开始标志获取
-59 8,15 * * 1,2,3,4,5 (sleep 55;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))
-59 8,14 * * 6 (sleep 55;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))
+59 8,14,15 * * * (sleep 55;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))
 # 抢车提醒
-45 8,14,15 * * * (cd /usr/local/apps/rongche;./set_user_list.sh >> log/$(date +\%Y\%m\%d))
+50 8,14,15 * * * (cd /usr/local/apps/rongche;./set_user_list.sh >> log/$(date +\%Y\%m\%d))
 # --融车抢标任务集合
