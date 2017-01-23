@@ -16,6 +16,7 @@ echo $USER_MAP
 
 USER_NUM=${#USER_MAP[*]}
 MAIL=""
+LOCAL_IP=$(ifconfig eth1|grep inet|sed "s/:/ /g"|awk '{print $3}')
 
 if [ -f car.list ]; then
 
@@ -45,7 +46,7 @@ if [ -f car.list ]; then
 		MAIL="no formal user, test user instead"
 	fi
 
-	echo "car.list ready, $(cat car.list|wc -l) cars; "$MAIL | mail -s "Rongche notify" 78250611@qq.com
+	echo "car.list ready, $(cat car.list|wc -l) cars; "$MAIL | mail -s "Rongche notify - from $LOCAL_IP" 78250611@qq.com
 fi
 
 doLog "Exit"
