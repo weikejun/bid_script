@@ -16,7 +16,7 @@ echo $USER_MAP
 
 USER_NUM=${#USER_MAP[*]}
 MAIL=""
-LOCAL_IP=$(ifconfig eth1|grep inet|sed "s/:/ /g"|awk '{print $3}')
+LOCAL_IP=$(/sbin/ifconfig eth1|grep inet|sed "s/:/ /g"|awk '{print $3}')
 
 if [ -f car.list ]; then
 
