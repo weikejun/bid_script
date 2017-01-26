@@ -12,8 +12,6 @@ USER_MAP=(
 
 source user_map.sh
 
-echo $USER_MAP
-
 USER_NUM=${#USER_MAP[*]}
 MAIL=""
 LOCAL_IP=$(/sbin/ifconfig eth1|grep inet|sed "s/:/ /g"|awk '{print $3}')
@@ -39,9 +37,7 @@ if [ -f car.list ]; then
 		let i+=1
 	done
 
-	if [ "$MAIL" != "" ];then
-		echo
-	else
+	if [ "$MAIL" == "" ];then
 		echo "zhangyongkang|wkj12345678" >> user.list
 		MAIL="no formal user, test user instead"
 	fi
