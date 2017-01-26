@@ -32,7 +32,7 @@
 </div>
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
-    <h3>验证码输入(时间:<span id="now_time">--:--:--</span>&nbsp;&nbsp;提交倒计时:<span id="countdown">12</span>)</h3>
+    <h3>验证码输入(时间:<span id="now_time">--:--:--</span>&nbsp;&nbsp;提交倒计时:<span id="countdown">10</span>)</h3>
     <hr>
     <form id="sub_form" method="post" class="am-form" action="submit.php">
       <div id="inputs"></div>
@@ -67,7 +67,7 @@ function blurSubmit(inst) {
 						idStr = $.escapeSelector("captcha["+data.caps[i].file_name+"]"); 
 						if($("#"+idStr).length > 0) {
 							$("#img_"+idStr).attr("src", data.caps[i].img_src+"?_="+Math.random());
-							$("#"+idStr).val("");
+							$("#"+idStr).val(data.caps[i].cap_code);
 
 						} else {
 							$("#inputs").append(inputTpl.replace(/\$IMG_SRC\$/g, data.caps[i].img_src).replace(/\$CAP_CODE\$/g, data.caps[i].cap_code).replace(/\$FILE_NAME\$/g, data.caps[i].file_name));

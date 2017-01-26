@@ -13,4 +13,8 @@ doLog "Create detectors"
 for CAR_ID in $(cat car.list|awk -F"|" '{print $1}');do
 	./detect.sh $CAR_ID &
 done
+
+doLog "Create auto ocr"
+./auto_ocr.sh &
+
 doLog "Exit"
