@@ -60,6 +60,8 @@ doLog "VerifyCodeNum.aspx response: captcha/$1_$2.gif create"
 
 doLog "Waiting for captcha input, session=$1, car_id=$2"
 while [ 1 -eq 1 ];do
+	convert captcha/$1_$2.gif -fuzz 40% -transparent white -alpha extract -negate -resize 180x75 /tmp/$1_$2.jpg > /dev/null
+	tesseract /tmp/$1_$2.jpg captcha/$1_$2 -l eng -psm 6 > /dev/null
 	if [ -f captcha/$1_$2.res ];then
 		CAPTCHA=$(cat captcha/$1_$2.res|sed -r "s/\s+//g")
 		break

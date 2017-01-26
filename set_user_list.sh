@@ -46,7 +46,7 @@ if [ -f car.list ]; then
 		MAIL="no formal user, test user instead"
 	fi
 
-	echo "car.list ready, $(cat car.list|wc -l) cars; "$MAIL | mail -s "Rongche notify - from $LOCAL_IP" 78250611@qq.com
+	echo "car.list ready, $(cat car.list|wc -l) cars; "$MAIL | mail -s "[Rongche notify]Ready - from $LOCAL_IP" 78250611@qq.com
 fi
 
 doLog "Exit"
