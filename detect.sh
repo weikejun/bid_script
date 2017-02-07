@@ -25,7 +25,7 @@ while [ 1 -eq 1 ];do
 	if [ "$FLAG" != "" ];then
 		COUNTDOWN=$(awk -F'"' '/^{.+}$/{print $4*1000}' $TMFILE)
 		ADJUST=$(awk -F'=' '/^total elapse/{print $2*1000}' $TMFILE)
-		if [ $ADJUST -gt 100 ];then
+		if [ $ADJUST -gt 50 ];then
 			doLog "GetDateTime elapse=$ADJUST too long, retry"
 			continue
 		fi
@@ -39,12 +39,12 @@ while [ 1 -eq 1 ];do
 			doLog "GetDateTime tigger create, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER_MIN"
 			continue;
 		else
-			if [ $COUNTDOWN_LAST -gt $COUNTDOWN ];then
+			if [ $COUNTDOWN -lt 11000 ];then
 				doLog "GetDateTime tigger refine done, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER_MIN"
 				break;
-			elif [ $COUNTDOWN -lt 9000 ];then
-				doLog "GetDateTime tigger refine exception, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER_MIN"
-				break;
+			else
+				COUNTDOWN_LAST=$COUNTDOWN
+				continue;
 			fi
 		fi
 	else
