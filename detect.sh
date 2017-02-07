@@ -29,7 +29,7 @@ while [ 1 -eq 1 ];do
 			doLog "GetDateTime elapse=$ADJUST too long, retry"
 			continue
 		fi
-		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2+$3/2-5}')
+		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2+$3*0}')
 		if [ $TIGGER -lt $TIGGER_MIN ];then
 			TIGGER_MIN=$TIGGER
 			echo $TIGGER_MIN > tigger/$1
@@ -39,7 +39,7 @@ while [ 1 -eq 1 ];do
 			doLog "GetDateTime tigger create, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER_MIN"
 			continue;
 		else
-			if [ $COUNTDOWN -lt 11000 ];then
+			if [ $COUNTDOWN -lt 10000 ];then
 				doLog "GetDateTime tigger refine done, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER_MIN"
 				break;
 			else
