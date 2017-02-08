@@ -50,7 +50,7 @@ if(file_exists("$dir/user.list")) {
 	$lines = file("$dir/user.list");
 	foreach($lines as $line) {
 		$user=explode("|", $line);
-		echo $user[0];
+		echo $user[0]."\n";
 	}
 }
 echo '</pre>';
