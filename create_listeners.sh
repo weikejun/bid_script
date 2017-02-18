@@ -22,4 +22,7 @@ for CAR_ID in $(cat car.list|awk -F"|" '{print $1}');do
 	done
 done
 
+doLog "Create auto ocr"
+./auto_ocr.sh &
+
 doLog "Exit"

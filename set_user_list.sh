@@ -38,8 +38,8 @@ if [ -f car.list ]; then
 	done
 
 	if [ "$MAIL" == "" ];then
-		echo "zhangyongkang|wkj12345678" >> user.list
-		MAIL="no formal user, test user instead"
+		#echo "zhangyongkang|wkj12345678" >> user.list
+		MAIL="no formal user"
 	fi
 
 	echo "car.list ready, $(cat car.list|wc -l) cars; "$MAIL | mail -s "[Rongche notify]Ready - from $LOCAL_IP" 78250611@qq.com
