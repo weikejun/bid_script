@@ -20,5 +20,5 @@ apt-get install samba
 apt-get install smbfs
 apt-get install tesseract-ocr 
 
-mount.cifs //115.28.137.179/rongche_tigger /usr/local/apps/rongche/tigger -o user=root
+mount.cifs //10.29.101.60/rongche_tigger /usr/local/apps/rongche/tigger -o user=root
 
