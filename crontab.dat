@@ -6,7 +6,7 @@
 # 抢标监听进程
 59 8,14,15 * * * (cd /usr/local/apps/rongche;./create_listeners.sh >> log/$(date +\%Y\%m\%d))
 # 开始标志获取
-59 8,14,15 * * * (sleep 55;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))
+# 59 8,14,15 * * * (sleep 55;cd /usr/local/apps/rongche;./create_detectors.sh >> log/$(date +\%Y\%m\%d))
 # 抢车提醒
 50 8,14,15 * * * (cd /usr/local/apps/rongche;./set_user_list.sh >> log/$(date +\%Y\%m\%d))
 # 抢标结果

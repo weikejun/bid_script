@@ -18,7 +18,10 @@ crontab /tmp/cron.tmp
 # set dependences
 apt-get install samba
 apt-get install smbfs
+apt-get install cifs-utils
 apt-get install tesseract-ocr 
+apt-get install heirloom-mailx
+apt-get install imagemagick
 
 mount.cifs //10.29.101.60/rongche_tigger /usr/local/apps/rongche/tigger -o user=root
 
