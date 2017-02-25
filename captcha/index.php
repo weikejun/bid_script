@@ -35,6 +35,7 @@
     <hr>
     <div>IP: 118.190.23.54<br /><a href="http://118.190.23.54/captcha/input.php">验证码录入</a> | <a href="http://118.190.23.54/captcha/actLog.php">操作日志</a> | <a href="http://118.190.23.54/captcha/monitor.php">状态监控</a> | <a href="http://118.190.23.54/captcha/user.php">参与账户</a></div>
     <div>IP: 118.190.23.53<br /><a href="http://118.190.23.53/captcha/input.php">验证码录入</a> | <a href="http://118.190.23.53/captcha/actLog.php">操作日志</a> | <a href="http://118.190.23.53/captcha/monitor.php">状态监控</a> | <a href="http://118.190.23.53/captcha/user.php">参与账户</a></div>
+    <div>IP: 118.190.42.82<br /><a href="http://118.190.42.82/captcha/input.php">验证码录入</a> | <a href="http://118.190.42.82/captcha/actLog.php">操作日志</a> | <a href="http://118.190.42.82/captcha/monitor.php">状态监控</a> | <a href="http://118.190.42.82/captcha/user.php">参与账户</a></div>
     <hr>
     <p>© 2016 Jimwei </p>
   </div>
