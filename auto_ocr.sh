@@ -4,6 +4,8 @@ cd $(dirname $0)
 source common.sh
 doLog "Start"
 
+exit
+
 while [ 1 -eq 1 ];do
 	if [ "$(ls captcha/|grep .gif)" != "" ];then
 		for f in $(ls captcha/*.gif|xargs);do
