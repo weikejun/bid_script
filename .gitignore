@@ -7,5 +7,6 @@ tigger/*
 sess.map
 captcha/*.gif
 captcha/*.res
+captcha/*.tips
 captcha/archives/*
 user_map.sh
