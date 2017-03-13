@@ -9,8 +9,15 @@ if [ ! -f car.list ];then
 	exit
 fi
 
+CAR_NO=$(echo $(cat car.list|wc -l)|awk '{srand();print (int(rand()*10))%$1;}')
+IND=-1
+
 doLog "Create listeners"
 for CAR_ID in $(cat car.list|awk -F"|" '{print $1}');do
+	IND=$[$IND + 1]
+	if [ $IND -ne $CAR_NO ];then
+		continue;
+	fi
 	for USER in $(cat user.list|sed -r "s/\s+//g");do
 		NAME=$(echo $USER|awk -F"|" '{print $1}')
 		PASS=$(echo $USER|awk -F"|" '{print $2}')
@@ -22,7 +29,7 @@ for CAR_ID in $(cat car.list|awk -F"|" '{print $1}');do
 	done
 done
 
-doLog "Create auto ocr"
-./auto_ocr.sh &
+#doLog "Create auto ocr"
+#./auto_ocr.sh &
 
 doLog "Exit"
