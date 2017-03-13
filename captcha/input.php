@@ -23,6 +23,12 @@
     .header p {
       font-size: 14px;
     }
+    .selFont {
+      padding: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      border: solid;
+    }
   </style>
 </head>
 <body>
@@ -32,7 +38,7 @@
 </div>
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
-    <h3>验证码录入(时间:<span id="now_time">--:--:--</span>&nbsp;&nbsp;提交倒计时:<span id="countdown">15</span>)</h3>
+    <h3>验证码录入(时间:<span id="now_time">--:--:--</span>&nbsp;&nbsp;提交倒计时:<span id="countdown">200</span>)</h3>
     <hr>
     <form id="sub_form" method="post" class="am-form" action="submit.php">
       <div id="inputs"></div>
@@ -47,7 +53,7 @@
 <script src="/captcha/jquery-3.1.1.min.js"></script>
 <script>
 var srvTime = 0;
-var inputTpl = '<label id="lable_captcha[$FILE_NAME$]" for="captcha[$FILE_NAME$]"><img id="img_captcha[$FILE_NAME$]" src="$IMG_SRC$"></label><input autocomplete="off" type="text" name="captcha[$FILE_NAME$]" id="captcha[$FILE_NAME$]" value="$CAP_CODE$" onblur="blurSubmit(this);"><br>';
+var inputTpl = '<label id="lable_captcha[$FILE_NAME$]" for="captcha[$FILE_NAME$]"><img id="img_captcha[$FILE_NAME$]" src="$IMG_SRC$"></label><input autocomplete="off" type="text" name="captcha[$FILE_NAME$]" id="captcha[$FILE_NAME$]" value="$CAP_CODE$" onblur="blurSubmit(this);"><div style="padding:20px 0 20px 0;"><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span></div>';
 var startCount = 0;
 function blurSubmit(inst) {
 	$.ajax({
@@ -71,6 +77,17 @@ function blurSubmit(inst) {
 
 						} else {
 							$("#inputs").append(inputTpl.replace(/\$IMG_SRC\$/g, data.caps[i].img_src).replace(/\$CAP_CODE\$/g, data.caps[i].cap_code).replace(/\$FILE_NAME\$/g, data.caps[i].file_name));
+						}
+						if (!data.caps[i].cap_tips) continue;
+						var strArrs = data.caps[i].cap_tips.split('*');
+						for(n = 0; n < strArrs.length; n++) {
+							$(".smallFont_"+idStr).eq(n).text(strArrs[n]);
+							$(".smallFont_"+idStr).eq(n).unbind('click');
+							$(".smallFont_"+idStr).attr('idStr', idStr);
+							$(".smallFont_"+idStr).eq(n).click(function() {
+								var _idStr = $(this).attr('idStr');
+								$("#"+_idStr).val($("#"+_idStr).val()+$(this).text());
+							});
 						}
 					}		
 					startCount || setInterval(function() {

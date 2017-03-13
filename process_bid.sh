@@ -52,11 +52,16 @@ if [ "$(echo $RET|grep '&0')" == "" ];then
 	exit
 fi
 
-doLog "VerifyCodeNum.aspx request"
+doLog "VerifyCodeCH.aspx request, session=$1, car_id=$2"
 NS=$(date +%s%N)
 TIMESTAMP=${NS:0:13}
-curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Resource/Scripts/Common/VerifyCodeNum.aspx?time=$TIMESTAMP" -H "Host: www.zhongchoucar.com" -H 'Pragma: no-cache' -H 'Accept-Encoding: gzip, deflate, sdch' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Accept: image/webp,*/*;q=0.8' -H "Referer: http://www.zhongchoucar.com$URI" -H 'Connection: keep-alive' -H 'Cache-Control: no-cache' --compressed -o "captcha/$1_$2.gif"
-doLog "VerifyCodeNum.aspx response: captcha/$1_$2.gif create"
+curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Resource/Scripts/Common/VerifyCodeCH.aspx?time=$TIMESTAMP" -H "Host: www.zhongchoucar.com" -H 'Pragma: no-cache' -H 'Accept-Encoding: gzip, deflate, sdch' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Accept: image/webp,*/*;q=0.8' -H "Referer: http://www.zhongchoucar.com$URI" -H 'Connection: keep-alive' -H 'Cache-Control: no-cache' --compressed -o "captcha/$1_$2.gif"
+doLog "VerifyCodeCH.aspx response: captcha/$1_$2.gif create"
+
+doLog "ContrastMoney_UnKnows.ashx, request"
+curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Info/T493000657/Front/InsideTwo/Ajax/ContrastMoney_UnKnows.ashx" -H "Host: www.zhongchoucar.com" -H 'Pragma: no-cache' -H 'Accept-Encoding: gzip, deflate, sdch' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Accept: image/webp,*/*;q=0.8' -H "Referer: http://www.zhongchoucar.com$URI" -H 'Connection: keep-alive' -H 'Cache-Control: no-cache' --compressed -o "captcha/$1_$2.tips"
+doLog "ContrastMoney_UnKnows.ashx.aspx response: captcha/$1_$2.tips create"
+touch captcha/$1_$2.gif
 
 doLog "Waiting for captcha input, session=$1, car_id=$2"
 while [ 1 -eq 1 ];do

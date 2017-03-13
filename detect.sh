@@ -29,7 +29,7 @@ while [ 1 -eq 1 ];do
 			doLog "GetDateTime elapse=$ADJUST too long, retry"
 			continue
 		fi
-		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2+$3*0}')
+		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2+$3*0-60}')
 		if [ $TIGGER -lt $TIGGER_MIN ];then
 			TIGGER_MIN=$TIGGER
 			echo $TIGGER_MIN > tigger/$1

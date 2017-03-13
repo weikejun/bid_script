@@ -15,11 +15,16 @@ foreach($files as $f) {
 			if(file_exists($finfo['filename'].'.res')) {
 				$capCode = file_get_contents($finfo['filename'].'.res');
 			}
+			$capTips = null;
+			if(file_exists($finfo['filename'].'.tips')) {
+				$capTips = file_get_contents($finfo['filename'].'.tips');
+			}
 			$data['res']++;
 			$data['caps'][] = [
 				'img_src' => $f,
 				'cap_code' => $capCode,
 				'file_name' => $finfo['filename'],
+				'cap_tips' => $capTips,
 				];
 		}
 	}
