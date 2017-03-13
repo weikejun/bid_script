@@ -53,7 +53,7 @@
 <script src="/captcha/jquery-3.1.1.min.js"></script>
 <script>
 var srvTime = 0;
-var inputTpl = '<label id="lable_captcha[$FILE_NAME$]" for="captcha[$FILE_NAME$]"><img id="img_captcha[$FILE_NAME$]" src="$IMG_SRC$"></label><input autocomplete="off" type="text" name="captcha[$FILE_NAME$]" id="captcha[$FILE_NAME$]" value="$CAP_CODE$" onblur="blurSubmit(this);"><div style="padding:20px 0 20px 0;"><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span></div>';
+var inputTpl = '<label id="lable_captcha[$FILE_NAME$]" for="captcha[$FILE_NAME$]"><img style="width:165px;height:60px" id="img_captcha[$FILE_NAME$]" src="$IMG_SRC$"></label><div style="padding:20px 0 20px 0;"><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span></div><input autocomplete="off" type="text" name="captcha[$FILE_NAME$]" id="captcha[$FILE_NAME$]" value="$CAP_CODE$" onblur="blurSubmit(this);">';
 var startCount = 0;
 function blurSubmit(inst) {
 	$.ajax({
