@@ -87,6 +87,7 @@ function blurSubmit(inst) {
 							$(".smallFont_"+idStr).eq(n).click(function() {
 								var _idStr = $(this).attr('idStr');
 								$("#"+_idStr).val($("#"+_idStr).val()+$(this).text());
+								$("#"+_idStr).focus();
 							});
 						}
 					}		
