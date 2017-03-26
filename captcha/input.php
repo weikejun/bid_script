@@ -24,7 +24,7 @@
       font-size: 14px;
     }
     .selFont {
-      padding: 10px;
+      padding: 12px;
       font-size: 20px;
       cursor: pointer;
       border: solid;
@@ -43,7 +43,7 @@
     <form id="sub_form" method="post" class="am-form" action="submit.php">
       <div id="inputs"></div>
       <div class="am-cf">
-	<input type="submit" name="" value="提 交" class="am-btn am-btn-primary am-btn-sm am-fl">
+	<br /><input type="submit" name="" value="提 交" class="am-btn am-btn-primary am-btn-sm am-fl">
       </div>
     </form>
     <hr>
@@ -53,7 +53,7 @@
 <script src="/captcha/jquery-3.1.1.min.js"></script>
 <script>
 var srvTime = 0;
-var inputTpl = '<label id="lable_captcha[$FILE_NAME$]" for="captcha[$FILE_NAME$]"><img style="width:165px;height:60px" id="img_captcha[$FILE_NAME$]" src="$IMG_SRC$"></label><div style="padding:20px 0 20px 0;"><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont clear_captcha[$FILE_NAME$]">X</span></div><input autocomplete="off" type="text" name="captcha[$FILE_NAME$]" id="captcha[$FILE_NAME$]" value="$CAP_CODE$" disabled="true">';
+var inputTpl = '<label id="lable_captcha[$FILE_NAME$]" for="captcha[$FILE_NAME$]"><img style="width:231px;height:84px" id="img_captcha[$FILE_NAME$]" src="$IMG_SRC$"></label><div style="padding:20px 0 20px 0;"><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont clear_captcha[$FILE_NAME$]">X</span></div><input autocomplete="off" type="text" name="captcha[$FILE_NAME$]" id="captcha[$FILE_NAME$]" value="$CAP_CODE$" readOnly="true">';
 var startCount = 0;
 function blurSubmit(inst) {
 	$.ajax({
@@ -62,10 +62,7 @@ function blurSubmit(inst) {
 			success: function(data) {}
 	});	
 };
-$("#sub_form").submit(function() {
-	$("input").removeAttr("disabled");
-	return true;
-});
+var delStack = {};
 (syncSrvDate = function() {
 	$.ajax({
 		url: "/captcha/syncCap.php?srv_t=" + srvTime,
@@ -75,6 +72,7 @@ $("#sub_form").submit(function() {
 				if(data.res > 0) {
 					for(i = 0; i < data.res; i++) {
 						idStr = $.escapeSelector("captcha["+data.caps[i].file_name+"]"); 
+						delStack[idStr] = [];
 						if($("#"+idStr).length > 0) {
 							$("#img_"+idStr).attr("src", data.caps[i].img_src+"?_="+Math.random());
 							$("#"+idStr).val(data.caps[i].cap_code);
@@ -86,12 +84,15 @@ $("#sub_form").submit(function() {
 						var strArrs = data.caps[i].cap_tips.split('*');
 						for(n = 0; n < strArrs.length; n++) {
 							$(".smallFont_"+idStr).eq(n).text(strArrs[n]);
+							$(".smallFont_"+idStr).show();
 							$(".smallFont_"+idStr).eq(n).unbind('click');
 							$(".smallFont_"+idStr).attr('idStr', idStr);
 							$(".smallFont_"+idStr).eq(n).click(function() {
 								var _idStr = $(this).attr('idStr');
 								$("#"+_idStr).val($("#"+_idStr).val()+$(this).text());
 								blurSubmit($("#"+_idStr));
+								$(this).hide();
+								delStack[_idStr].push(this);
 							});
 						}
 						$(".clear_"+idStr).attr('idStr', idStr);
@@ -100,6 +101,8 @@ $("#sub_form").submit(function() {
 							var _idStr = $(this).attr('idStr');
 							var _ipt = $("#"+_idStr);
 							_ipt.val(_ipt.val().substr(0, _ipt.val().length - 1));
+							var _obj = delStack[_idStr].pop();
+							$(_obj).show();
 							blurSubmit(_ipt);
 						});
 					}		

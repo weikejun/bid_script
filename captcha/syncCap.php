@@ -31,4 +31,5 @@ foreach($files as $f) {
 }
 
 $data['srv_t'] = time();
+shuffle($data['caps']);
 echo json_encode($data);
