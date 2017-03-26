@@ -53,7 +53,7 @@
 <script src="/captcha/jquery-3.1.1.min.js"></script>
 <script>
 var srvTime = 0;
-var inputTpl = '<label id="lable_captcha[$FILE_NAME$]" for="captcha[$FILE_NAME$]"><img style="width:165px;height:60px" id="img_captcha[$FILE_NAME$]" src="$IMG_SRC$"></label><div style="padding:20px 0 20px 0;"><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span></div><input autocomplete="off" type="text" name="captcha[$FILE_NAME$]" id="captcha[$FILE_NAME$]" value="$CAP_CODE$" onblur="blurSubmit(this);">';
+var inputTpl = '<label id="lable_captcha[$FILE_NAME$]" for="captcha[$FILE_NAME$]"><img style="width:165px;height:60px" id="img_captcha[$FILE_NAME$]" src="$IMG_SRC$"></label><div style="padding:20px 0 20px 0;"><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont smallFont_captcha[$FILE_NAME$]"></span><span class="selFont clear_captcha[$FILE_NAME$]">X</span></div><input autocomplete="off" type="text" name="captcha[$FILE_NAME$]" id="captcha[$FILE_NAME$]" value="$CAP_CODE$" disabled="true">';
 var startCount = 0;
 function blurSubmit(inst) {
 	$.ajax({
@@ -62,6 +62,10 @@ function blurSubmit(inst) {
 			success: function(data) {}
 	});	
 };
+$("#sub_form").submit(function() {
+	$("input").removeAttr("disabled");
+	return true;
+});
 (syncSrvDate = function() {
 	$.ajax({
 		url: "/captcha/syncCap.php?srv_t=" + srvTime,
@@ -87,9 +91,17 @@ function blurSubmit(inst) {
 							$(".smallFont_"+idStr).eq(n).click(function() {
 								var _idStr = $(this).attr('idStr');
 								$("#"+_idStr).val($("#"+_idStr).val()+$(this).text());
-								$("#"+_idStr).focus();
+								blurSubmit($("#"+_idStr));
 							});
 						}
+						$(".clear_"+idStr).attr('idStr', idStr);
+						$(".clear_"+idStr).unbind("click");
+						$(".clear_"+idStr).click(function() {
+							var _idStr = $(this).attr('idStr');
+							var _ipt = $("#"+_idStr);
+							_ipt.val(_ipt.val().substr(0, _ipt.val().length - 1));
+							blurSubmit(_ipt);
+						});
 					}		
 					startCount || setInterval(function() {
 						startCount = 1;
