@@ -39,7 +39,7 @@ while [ 1 -eq 1 ];do
 			doLog "GetDateTime tigger create, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER_MIN"
 			continue;
 		else
-			if [ $COUNTDOWN -lt 10000 ];then
+			if [ $COUNTDOWN -lt 13000 ];then
 				doLog "GetDateTime tigger refine done, car_id=$1, countdown=$COUNTDOWN, adjust=$ADJUST, tigger_time=$TIGGER_MIN"
 				break;
 			else
