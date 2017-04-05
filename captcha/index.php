@@ -33,8 +33,7 @@
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
     <h3>节点导航</h3>
     <hr>
-    <div>IP: 118.190.23.54<br /><a href="http://118.190.23.54/captcha/input.php">验证码录入</a> | <a href="http://118.190.23.54/captcha/actLog.php">操作日志</a> | <a href="http://118.190.23.54/captcha/monitor.php">状态监控</a> | <a href="http://118.190.23.54/captcha/user.php">参与账户</a> | <a href="http://118.190.23.54/captcha/voteAmount.php">已投票金额</a></div>
-    <div>IP: 118.190.23.53<br /><a href="http://118.190.23.53/captcha/input.php">验证码录入</a> | <a href="http://118.190.23.53/captcha/actLog.php">操作日志</a> | <a href="http://118.190.23.53/captcha/monitor.php">状态监控</a> | <a href="http://118.190.23.53/captcha/user.php">参与账户</a> | <a href="http://118.190.23.54/captcha/voteAmount.php">已投票金额</a></div>
+    <div><a href="input.php">验证码录入</a> | <a href="actLog.php">操作日志</a> | <a href="monitor.php">状态监控</a> | <a href="user.php">参与账户</a> | <a href="voteAmount.php">已投票金额</a></div>
     <hr>
     <p>© 2016 Jimwei </p>
   </div>
