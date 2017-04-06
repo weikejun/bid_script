@@ -23,4 +23,6 @@ for uri in $(cat http/get_seed.http |grep -i "InsideTwo.aspx?Id"|sed -e "s/[<>]/
 	doLog "InsideTwo.aspx response, car_id=$CARID"
 done
 
+chmod 666 $LIST_FILE
+
 doLog "Exit"
