@@ -24,15 +24,19 @@ while [ 1 -eq 1 ];do
 
 	if [ "$FLAG" != "" ];then
 		COUNTDOWN=$(awk -F'"' '/^{.+}$/{print $4*1000}' $TMFILE)
+		if [ $COUNTDOWN -eq 0 ];then
+			continue
+		fi
 		ADJUST=$(awk -F'=' '/^total elapse/{print $2*1000}' $TMFILE)
 		if [ $ADJUST -gt 50 ];then
-			doLog "GetDateTime elapse=$ADJUST too long, retry"
+			doLog "GetDateTime elapse=$ADJUST too long, car_id=$1, retry"
 			continue
 		fi
 		TIGGER=$(echo $START_TIME $COUNTDOWN $ADJUST|awk '{printf "%.0f", $1+$2+$3*0-110}')
 		if [ $TIGGER -lt $TIGGER_MIN ];then
 			TIGGER_MIN=$TIGGER
 			echo $TIGGER_MIN > tigger/$1
+			sleep 0.5
 		fi
 		if [ $COUNTDOWN_LAST -eq -1 ];then
 			COUNTDOWN_LAST=$COUNTDOWN
@@ -49,6 +53,7 @@ while [ 1 -eq 1 ];do
 		fi
 	else
 		[ -f tigger/$1 ] && rm tigger/$1
+		sleep 0.3
 	fi
 
 done

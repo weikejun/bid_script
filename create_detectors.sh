@@ -10,7 +10,7 @@ if [ ! -f car.list ];then
 fi
 
 doLog "Create detectors"
-for CAR_ID in $(cat car.list|awk -F"|" '{print $1}');do
+for CAR_ID in $(cat car.list|awk -F"|" '{print $1}'|sort|uniq);do
 	./detect.sh $CAR_ID &
 done
 
