@@ -23,7 +23,7 @@ for CAR_ID in $(cat $LIST_FILE|awk -F"|" '{print $1}');do
 		PASS=$(echo $USER|awk -F"|" '{print $2}')
 		./user_login.sh $NAME $PASS
 		./get_amount.sh $NAME
-		FILE_NAME=$(ls cookies/|grep $NAME|tail -n 1)
+		FILE_NAME=$(ls cookies/|egrep "^$NAME"|tail -n 1)
 		COOKIE_FILE="cookies/$FILE_NAME"
 		./process_bid.sh $FILE_NAME $CAR_ID &
 		doLog "Dispatch car=$CAR_ID to user=$NAME"
