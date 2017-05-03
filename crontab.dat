@@ -13,4 +13,5 @@
 0 9,15,16 * * * (sleep 20;cd /usr/local/apps/rongche;./notify_response.sh >> log/$(date +\%Y\%m\%d))
 # 取得已投票列表
 40 * * * * (cd /usr/local/apps/rongche;./get_cf_list.sh >> log/$(date +\%Y\%m\%d))
+39 * * * * (cd /usr/local/apps/rongche;./get_acc_list.sh >> log/$(date +\%Y\%m\%d))
 # --融车抢标任务集合

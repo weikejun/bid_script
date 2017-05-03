@@ -42,6 +42,11 @@ echo "<pre>";
 $allAmount = 0;
 $allCount = 0;
 $allOutput = "";
+$accOutput = "";
+$accBalance = 0;
+$accCount = 0;
+$accWait = 0;
+$accOutput = "";
 foreach($files as $f) {
 	$finfo = pathinfo($f);
 	if (strpos($finfo['filename'], 'list_cf') !== false) {
@@ -62,8 +67,18 @@ foreach($files as $f) {
 		$allAmount += $amount;
 		$allCount += $count;
 		$allOutput .= $output;
+	} elseif (strpos($finfo['filename'], 'list_acc') !== false) {
+		$fnParam = explode("_", $f);
+		$accCount++;
+		$account = file("$dir/http/$f");
+		$account[0] = trim($account[0]);
+		$account[1] = trim($account[1]);
+		$accWait += $account[1];
+		$accBalance += $account[0];
+		$accOutput .= "$fnParam[2]|$account[1]|$account[0]\n";
 	}
 }
+echo "<b>账户总计: $accCount 待收金额: $accWait 可用余额: $accBalance</b>\n$accOutput\n";
 echo "<b>车辆总计: $allCount 投票金额: $allAmount 预期收益: ".($allAmount*0.03)."</b>\n" . $allOutput;
 echo "</pre>";
 
