@@ -5,6 +5,7 @@ source common.sh
 doLog "Start"
 
 declare -A TRIGGER 
+declare -A IDS
 
 while [ 1 -eq 1 ];do
 	NUM=$(ls tigger/|wc -l)
@@ -12,16 +13,23 @@ while [ 1 -eq 1 ];do
 		continue;
 	fi
 	LEN=0
-	MAX=0
+	EXPE=0
 	for t in $(ls tigger/*);do
+		ID=$(basename $t)
 		TRIGGER[$LEN]=$(cat $t)
-		if [ $MAX -lt ${TRIGGER[$LEN]} ];then
-			MAX=${TRIGGER[$LEN]}
-		fi
+		IDS[$LEN]=$ID
+		EXPE=$[$EXPE + ${TRIGGER[$LEN]}]
 		LEN=$[$LEN + 1]
 	done
-	for t in $(ls tigger/*);do
-		echo -n $MAX > $t
+	EXPE=$[$EXPE / $LEN]
+	ITR=0
+	while [ $ITR -lt $LEN ];do
+		DT=$[${TRIGGER[$ITR]} - $EXPE]
+		if [ $DT -lt -10 ];then
+			doLog "Refine trigger, car="${IDS[$ITR]}", expe=$EXPE, trigger="${TRIGGER[$ITR]}
+			echo $[$EXPE + 5] > tigger/${IDS[$ITR]}
+		fi
+		ITR=$[$ITR + 1]
 	done
 	sleep 1
 done
