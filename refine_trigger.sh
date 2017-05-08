@@ -28,11 +28,10 @@ while [ 1 -eq 1 ];do
 		if [ $DT -lt -10 ];then
 			doLog "Refine trigger, car="${IDS[$ITR]}", expe=$EXPE, trigger="${TRIGGER[$ITR]}
 			echo $[$EXPE + 5] > tigger/${IDS[$ITR]}
-			chmod 666 tigger/${IDS[$ITR]}
 		fi
 		ITR=$[$ITR + 1]
 	done
-	sleep 5
+	sleep 10
 done
 
 doLog "Exit"
