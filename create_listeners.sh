@@ -30,7 +30,7 @@ done
 CAR_ITR=0
 USR_ITR=0
 NUM=0
-MAX_NUM=4
+MAX_NUM=2
 while [ $CAR_ITR -lt $CAR_LEN ] && [ $NUM -lt $MAX_NUM ];do
 	DIFF=$CAR_ITR
 	USR_ITR=0

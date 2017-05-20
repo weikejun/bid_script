@@ -88,6 +88,18 @@ while [ 1 -eq 1 ];do
 			doLog "ValSpeed.ashx retry response=$RET, session=$1, car_id=$2"
 		fi
 		break
+	else
+		if [ -f captcha/$1_$2.chk ];then
+			continue
+		fi
+		CAP_LEN=${#CAPTCHA}
+		if [ $CAP_LEN -ne 4 ];then
+			continue
+		fi
+		doLog "ContrasPan.ashx request: captcha=$CAPTCHA, session=$1, tigger=$TIGGER, car_id=$2"
+		curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Info/T493000657/Front/InsideTwo/Ajax/ContrasPan.ashx" -H "Host: www.zhongchoucar.com"  -H 'Origin: http://www.zhongchoucar.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.8,en;q=0.6' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -H 'Accept: */*' -H "Referer: http://www.zhongchoucar.com$URI" -H 'X-Requested-With: XMLHttpRequest' -H 'Connection: keep-alive' --data "ma=$CAPTCHA" --compressed -i -o "captcha/$1_$2.chk"
+		RET=$(cat captcha/$1_$2.chk|egrep "^[-0-9]+"|sed -r "s/\s+//g")
+		doLog "ContrasPan.ashx response=$RET, session=$1, car_id=$2"
 	fi
 done
 doLog "Exit"
