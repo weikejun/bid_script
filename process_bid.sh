@@ -72,6 +72,7 @@ while [ 1 -eq 1 ];do
 done
 doLog "Captcha input ok, wait for submitting, code=$CAPTCHA, session=$1, car_id=$2"
 
+RETRY=0
 while [ 1 -eq 1 ];do
 	TIGGER=$(cat tigger/$2)
 	CAPTCHA=$(cat captcha/$1_$2.res)
@@ -83,9 +84,13 @@ while [ 1 -eq 1 ];do
 		RET=$(cat http/valspeed_$1_$2|egrep "^[-0-9]+"|sed -r "s/\s+//g")
 		doLog "ValSpeed.ashx response=$RET, session=$1, car_id=$2"
 		if [ $RET -eq -1 ] || [ $RET -eq 0 ];then
-			curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Info/T493000657/Front/InsideTwo/Ajax/ValSpeed.ashx" -H 'Host: www.zhongchoucar.com' -H 'Pragma: no-cache' -H 'Origin: http://www.zhongchoucar.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -H 'Accept: */*' -H 'Cache-Control: no-cache' -H 'X-Requested-With: XMLHttpRequest' -H 'Connection: keep-alive' -H "Referer: http://www.zhongchoucar.com$URI" --data "touMoney=$AMOUNT&payPwd=wkj12345678&imageYanMa=$CAPTCHA&standardId=$2&sensePwd=" --compressed -i -o "http/valspeed_$1_$2"
-			RET=$(cat http/valspeed_$1_$2|egrep "^[-0-9]+"|sed -r "s/\s+//g")
-			doLog "ValSpeed.ashx retry response=$RET, session=$1, car_id=$2"
+			if [ $RETRY -eq 3 ];then
+				break
+			fi
+			doLog "ValSpeed.ashx retry, times=$RETRY, session=$1, car_id=$2"
+			RETRY=$[$RETRY + 1]
+			sleep 0.05
+			continue
 		fi
 		break
 	else
