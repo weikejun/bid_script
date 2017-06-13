@@ -53,7 +53,7 @@ while [ 1 -eq 1 ];do
 		fi
 	else
 		[ -f tigger/$1 ] && rm tigger/$1
-		sleep 0.3
+		sleep 1
 	fi
 
 done

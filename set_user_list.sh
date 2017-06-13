@@ -4,12 +4,6 @@ cd $(dirname $0)
 source common.sh
 doLog "Start"
 
-USER_MAP=(
-"xxxwkj|wkj12345678"
-"sangsangdong|bababu523"
-"jimdev|wkj12345678"
-)
-
 source user_map.sh
 
 USER_NUM=${#USER_MAP[*]}
@@ -18,7 +12,7 @@ LOCAL_IP=$(/sbin/ifconfig eth1|grep inet|sed "s/:/ /g"|awk '{print $3}')
 
 if [ -f car.list ]; then
 
-	> user.list
+	echo -n > user.list
 
 	i=0
 
