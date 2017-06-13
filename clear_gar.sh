@@ -20,7 +20,7 @@ done
 
 for dir in $(echo "cookies amount tigger");do
 	doLog "Clear $dir start"
-	doClear "$dir" 1800
+	doClear "$dir" 3600
 	doLog "Clear $dir done"
 done
 
