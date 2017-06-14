@@ -12,25 +12,26 @@ if [ $EXIST -ge 1 ];then
 fi
 
 TRIGGER_FILE="tigger/car"
-SLEEP_TIME=1620
-NOW_DATE=$(date +%Y%m%d)
+SLEEP_TIME=1440
 LOCAL_IP=$(/sbin/ifconfig eth1|grep inet|sed "s/:/ /g"|awk '{print $3}')
-source user_map.sh
 
 while [ 1 -eq 1 ];do
 	if [ -f $TRIGGER_FILE ];then # 开始执行抢标脚本
+		NOW_DATE=$(date +%Y%m%d)
+		source user_map.sh
+		
 		doLog "Trigger exist, sleep"
+
 		sleep $SLEEP_TIME
-
 		./set_user_list.sh >> log/$NOW_DATE # 生成抢标账户
-		sleep 15
 
+		sleep 120
 		./create_listeners.sh >> log/$NOW_DATE # 创建抢标监听进程
+
 		sleep 30
-
 		./create_detectors.sh >> log/$NOW_DATE # 创建开始探测进程
-		sleep 3600
 
+		sleep 3600
 		continue
 	fi
 	if [ -f car.list ];then # 发标探测通知
