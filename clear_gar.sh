@@ -18,11 +18,18 @@ for f in $(ls $DIR|xargs);do
 done
 }
 
-for dir in $(echo "cookies amount tigger");do
+for dir in $(echo "amount tigger");do
 	doLog "Clear $dir start"
 	doClear "$dir" 3600
 	doLog "Clear $dir done"
 done
+
+for dir in $(echo "cookies");do
+	doLog "Clear $dir start"
+	doClear "$dir" 780
+	doLog "Clear $dir done"
+done
+
 
 for dir in $(echo "http log");do
 	doLog "Clear $dir start"
