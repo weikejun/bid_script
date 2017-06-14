@@ -14,6 +14,7 @@ fi
 TRIGGER_FILE="tigger/car"
 SLEEP_TIME=1620
 NOW_DATE=$(date +%Y%m%d)
+LOCAL_IP=$(/sbin/ifconfig eth1|grep inet|sed "s/:/ /g"|awk '{print $3}')
 source user_map.sh
 
 while [ 1 -eq 1 ];do
@@ -22,7 +23,7 @@ while [ 1 -eq 1 ];do
 		sleep $SLEEP_TIME
 
 		./set_user_list.sh >> log/$NOW_DATE # 生成抢标账户
-		sleep 10
+		sleep 15
 
 		./create_listeners.sh >> log/$NOW_DATE # 创建抢标监听进程
 		sleep 30
