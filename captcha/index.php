@@ -33,7 +33,7 @@
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
     <h3>节点导航</h3>
     <hr>
-    <div><a href="input.php">验证码录入</a> | <a href="actLog.php">操作日志</a> | <a href="monitor.php">状态监控</a> | <a href="car.php">车辆列表</a> | <a href="user.php">参与账户</a> | <a href="voteAmount.php">已投票金额</a></div>
+    <div><a href="input.php">验证码录入</a> | <a href="actLog.php">操作日志</a> | <a href="monitor.php">状态监控</a> | <a href="car.php">车辆列表</a> | <a href="user.php">参与账户</a> | <a href="voteAmount.php">已投票金额</a> | <a href="withdraw.php">批量取现</a></div>
     <hr>
     <p>© 2016 Jimwei </p>
   </div>

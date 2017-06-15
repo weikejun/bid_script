@@ -16,4 +16,6 @@
 39 * * * * (cd /usr/local/apps/rongche;./get_acc_list.sh >> log/$(date +\%Y\%m\%d))
 # 发标预告探测
 * * * * * (cd /usr/local/apps/rongche;./detect_car.sh >> log/detect_$(date +\%Y\%m\%d))
+# 批量提现
+* * * * * (cd /usr/local/apps/rongche;./withdraw.sh > /dev/null
 # --融车抢标任务集合
