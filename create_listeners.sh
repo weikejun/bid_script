@@ -20,7 +20,7 @@ CAR_LEN=0
 USR_LEN=0
 for USER in $(cat user.list|sed -r "s/\s+//g");do
 	CAR_LEN=0
-	for CAR_ID in $(cat $LIST_FILE|awk -F"|" '{print $1}');do
+	for CAR_ID in $(cat $LIST_FILE|head -n 3|awk -F"|" '{print $1}');do
 		DISPATCH[$ITR]=$USER"|"$CAR_ID
 		ITR=$[$ITR + 1]
 		CAR_LEN=$[$CAR_LEN + 1]
