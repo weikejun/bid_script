@@ -20,16 +20,15 @@ while [ 1 -eq 1 ];do
 	if [ -f $TRIGGER_FILE ];then # 开始执行抢标脚本
 		NOW_DATE=$(date +%Y%m%d)
 		TRIGGER=$(cat $TRIGGER_FILE)
-		SLEEP_TIME=$[$TRIGGER]
 		NOW_TIME=$(date +%s)
-		SLEEP_TIME=$[$SLEEP_TIME - $NOW_TIME]
+		SLEEP_TIME=$[$TRIGGER - $NOW_TIME]
 		if [ $SLEEP_TIME -le 0 ];then
 			rm $LIST_FILE $TRIGGER_FILE
 			continue
 		fi
 		source user_map.sh
 		
-		doLog "Trigger exist, sleep"
+		doLog "Trigger exist, sleep=$SLEEP_TIME"
 
 		sleep $SLEEP_TIME
 		./set_user_list.sh >> log/$NOW_DATE # 生成抢标账户
