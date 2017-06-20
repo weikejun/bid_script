@@ -12,6 +12,7 @@ if [ $EXIST -ge 1 ];then
 fi
 
 TRIGGER_FILE="tigger/car"
+LIST_FILE="car.list"
 SLEEP_TIME=1440
 LOCAL_IP=$(/sbin/ifconfig eth1|grep inet|sed "s/:/ /g"|awk '{print $3}')
 
@@ -22,6 +23,10 @@ while [ 1 -eq 1 ];do
 		SLEEP_TIME=$[$TRIGGER]
 		NOW_TIME=$(date +%s)
 		SLEEP_TIME=$[$SLEEP_TIME - $NOW_TIME]
+		if [ $SLEEP_TIME -le 0 ];then
+			rm $LIST_FILE $TRIGGER_FILE
+			continue
+		fi
 		source user_map.sh
 		
 		doLog "Trigger exist, sleep"
@@ -37,8 +42,8 @@ while [ 1 -eq 1 ];do
 
 		sleep 3600
 		continue
-	elif [ -f car.list ];then # 发标探测通知
-		FOUND=$(date -d "$(stat car.list|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
+	elif [ -f $LIST_FILE ];then # 发标探测通知
+		FOUND=$(date -d "$(stat $LIST_FILE|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
 		START=$[$FOUND + 1440]
 		echo $START > $TRIGGER_FILE
 		FOUND_DATE=$(date +"%Y%m%d %H:%M:%S" -d @$FOUND)
