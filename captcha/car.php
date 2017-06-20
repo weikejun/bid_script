@@ -53,7 +53,7 @@ else {
 	}
 } 
 ?>
-      <textarea autocomplete="off" name="cars" id="cars"><?php echo htmlspecialchars($carStr); ?></textarea>
+      <textarea style="height:150px;" autocomplete="off" name="cars" id="cars"><?php echo htmlspecialchars($carStr); ?></textarea>
       <br>
       <div class="am-cf">
         <input type="submit" name="" value="提 交" class="am-btn am-btn-primary am-btn-sm am-fl">
