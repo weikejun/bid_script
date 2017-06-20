@@ -15,7 +15,7 @@ if [ ! -f cookies/$1 ];then
 fi
 
 COOKIE_FILE="cookies/$1"
-URI=$(cat car.list|grep $2|awk -F"|" '{print $2}')
+URI="/Info/T493000657/Front/InsideTwo/InsideTwo.aspx?Id="$(cat car.list|grep $2|awk -F"|" '{print $2}')
 AMOUNT=$(cat amount/$(echo $1|awk -F"_" '{print $1}'))
 REMOTE_ADDR=$(nslookup www.zhongchoucar.com|grep Address|grep -v "#53"|awk '{print $2}')
 

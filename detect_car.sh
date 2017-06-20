@@ -18,6 +18,10 @@ LOCAL_IP=$(/sbin/ifconfig eth1|grep inet|sed "s/:/ /g"|awk '{print $3}')
 while [ 1 -eq 1 ];do
 	if [ -f $TRIGGER_FILE ];then # 开始执行抢标脚本
 		NOW_DATE=$(date +%Y%m%d)
+		TRIGGER=$(cat $TRIGGER_FILE)
+		SLEEP_TIME=$[$TRIGGER]
+		NOW_TIME=$(date +%s)
+		SLEEP_TIME=$[$SLEEP_TIME - $NOW_TIME]
 		source user_map.sh
 		
 		doLog "Trigger exist, sleep"
@@ -33,10 +37,9 @@ while [ 1 -eq 1 ];do
 
 		sleep 3600
 		continue
-	fi
-	if [ -f car.list ];then # 发标探测通知
+	elif [ -f car.list ];then # 发标探测通知
 		FOUND=$(date -d "$(stat car.list|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
-		START=$[$FOUND + $SLEEP_TIME]
+		START=$[$FOUND + 1440]
 		echo $START > $TRIGGER_FILE
 		FOUND_DATE=$(date +"%Y%m%d %H:%M:%S" -d @$FOUND)
 		START_DATE=$(date +"%Y%m%d %H:%M:%S" -d @$START)
