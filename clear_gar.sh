@@ -51,7 +51,7 @@ doLog "Clear process start"
 for p in $(ps -ef|egrep "process_bid|auto_ocr|refine_trigger"|grep -v "grep"|grep -v "vim"|awk '{print $2}');do
 	STARTED=$(date -d "$(ps -p $p -o lstart|grep -v -i STARTED)" +%s)
 	ELAPSED=$(($(date +%s) - $STARTED))
-	if [ $ELAPSED -gt 180 ];then
+	if [ $ELAPSED -gt 600 ];then
 		CMD="kill $p"
 		echo $CMD
 		eval $CMD

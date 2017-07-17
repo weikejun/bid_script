@@ -5,7 +5,7 @@ source common.sh
 doLog "Start"
 
 if [ -f http/withdraw_list ];then
-	for USER in $(cat http/withdraw_list);do
+	for USER in $(cat http/withdraw_list|sed -r "s/\s+//g");do
 		NAME=$(echo $USER|awk -F"|" '{print $1}')
 		PASS=$(echo $USER|awk -F"|" '{print $2}')
 		PAYPASS=$(echo $USER|awk -F"|" '{print $3}')
