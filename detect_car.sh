@@ -33,7 +33,7 @@ while [ 1 -eq 1 ];do
 		sleep $SLEEP_TIME
 		./set_user_list.sh >> log/$NOW_DATE # 生成抢标账户
 
-		sleep 120
+		sleep 60 
 		./create_listeners.sh >> log/$NOW_DATE # 创建抢标监听进程
 
 		sleep 30
