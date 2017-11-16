@@ -4,8 +4,8 @@ cd $(dirname $0)
 source common.sh
 doLog "Start"
 
-if [ $# != 2 ];then
-	doLog "Usage: $SCRIPT [SESSION] [CAR_ID]"
+if [ $# != 3 ];then
+	doLog "Usage: $SCRIPT [SESSION] [CAR_ID] [PAY_PASS]"
 	exit
 fi
 
@@ -18,6 +18,7 @@ COOKIE_FILE="cookies/$1"
 URI="/Info/T493000657/Front/InsideTwo/InsideTwo.aspx?Id="$(cat car.list|grep $2|awk -F"|" '{print $2}')
 AMOUNT=$(cat amount/$(echo $1|awk -F"_" '{print $1}'))
 REMOTE_ADDR=$(nslookup che.zhongchoucar.com|grep Address|grep -v "#53"|awk '{print $2}')
+PAYPASS=$3
 
 if [ "$URI" == "" ];then
 	doLog "Car $2 not in the list"
@@ -64,12 +65,15 @@ doLog "ContrastMoney_UnKnows.ashx.aspx response: captcha/$1_$2.tips create"
 touch captcha/$1_$2.gif
 
 doLog "Waiting for captcha input, session=$1, car_id=$2"
-while [ 1 -eq 1 ];do
+#TODO: 验证码暂时去掉
+CAPTCHA=""
+while [ 1 -eq 0 ];do
 	if [ -f captcha/$1_$2.res ];then
 		CAPTCHA=$(cat captcha/$1_$2.res|sed -r "s/\s+//g")
 		break
 	fi
 done
+#TODO
 doLog "Captcha input ok, wait for submitting, code=$CAPTCHA, session=$1, car_id=$2"
 
 RETRY=0
@@ -80,7 +84,7 @@ while [ 1 -eq 1 ];do
 	TIMESTAMP=${NS:0:13}
 	if [ $TIMESTAMP -ge $TIGGER ];then
 		doLog "ValSpeed.ashx request: captcha=$CAPTCHA, session=$1, tigger=$TIGGER, car_id=$2"
-		curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Info/T493000657/Front/InsideTwo/Ajax/ValSpeed.ashx" -H 'Host: che.zhongchoucar.com' -H 'Pragma: no-cache' -H 'Origin: http://che.zhongchoucar.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -H 'Accept: */*' -H 'Cache-Control: no-cache' -H 'X-Requested-With: XMLHttpRequest' -H 'Connection: keep-alive' -H "Referer: http://che.zhongchoucar.com$URI" --data "touMoney=$AMOUNT&payPwd=wkj12345678&imageYanMa=$CAPTCHA&standardId=$2&sensePwd=" --compressed -i -o "http/valspeed_$1_$2"
+		curl -b "ItDoor=xiaolin;" -b $COOKIE_FILE "http://$REMOTE_ADDR/Info/T493000657/Front/InsideTwo/Ajax/ValSpeed.ashx" -H 'Host: che.zhongchoucar.com' -H 'Pragma: no-cache' -H 'Origin: http://che.zhongchoucar.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.8' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -H 'Accept: */*' -H 'Cache-Control: no-cache' -H 'X-Requested-With: XMLHttpRequest' -H 'Connection: keep-alive' -H "Referer: http://che.zhongchoucar.com$URI" --data "touMoney=$AMOUNT&payPwd=$PAYPASS&imageYanMa=$CAPTCHA&standardId=$2&sensePwd=" --compressed -i -o "http/valspeed_$1_$2"
 		RET=$(cat http/valspeed_$1_$2|egrep "^[-0-9]+"|sed -r "s/\s+//g")
 		doLog "ValSpeed.ashx response=$RET, session=$1, car_id=$2"
 		if [ $RET -eq -1 ] || [ $RET -eq 0 ];then

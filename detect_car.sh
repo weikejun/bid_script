@@ -42,6 +42,17 @@ while [ 1 -eq 1 ];do
 		sleep 3600
 		continue
 	elif [ -f $LIST_FILE ];then # 发标探测通知
+		NOTIFY=""
+		for CAR in $(cat $LIST_FILE); do
+			NOTIFY=$(cat log/notify.list|grep $CAR)
+			if [ "$NOTIFY" != "" ]; then
+				break
+			fi
+			echo $CAR >> log/notify.list
+		done	
+		if [ "$NOTIFY" != "" ]; then
+			continue
+		fi
 		FOUND=$(date -d "$(stat $LIST_FILE|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
 		START=$[$FOUND + 1440]
 		echo $START > $TRIGGER_FILE

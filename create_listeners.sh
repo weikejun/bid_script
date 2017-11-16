@@ -37,12 +37,12 @@ while [ $CAR_ITR -lt $CAR_LEN ] && [ $NUM -lt $MAX_NUM ];do
 	while [ $USR_ITR -lt $USR_LEN ] && [ $NUM -lt $MAX_NUM ];do
 		ITR=$[$USR_ITR * $CAR_LEN]
 		ITR=$[$ITR + $DIFF]
-		read NAME PASS CAR_ID < <(echo ${DISPATCH[$ITR]}|awk -F'|' '{print $1,$2,$3}')
+		read NAME PASS PAYPASS CAR_ID < <(echo ${DISPATCH[$ITR]}|awk -F'|' '{print $1,$2,$3,$4}')
 		./user_login.sh $NAME $PASS
 		./get_amount.sh $NAME
 		FILE_NAME=$(ls cookies/|egrep "^$NAME"|tail -n 1)
 		COOKIE_FILE="cookies/$FILE_NAME"
-		./process_bid.sh $FILE_NAME $CAR_ID &
+		./process_bid.sh $FILE_NAME $CAR_ID $PAYPASS &
 		doLog "Dispatch car=$CAR_ID to user=$NAME"
 		USR_ITR=$[$USR_ITR + 1]
 		DIFF=$[$DIFF + 1]
