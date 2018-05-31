@@ -61,6 +61,7 @@ else {
       <br>
       <div class="am-cf">
         <input type="submit" name="" value="提 交" class="am-btn am-btn-primary am-btn-sm am-fl">
+        &nbsp;&nbsp;<a href="/captcha">返回</a>
       </div>
     </form>
     <hr>
@@ -78,7 +79,7 @@ foreach($lines as $line) {
 echo '</pre>';
 ?>
     <hr>
-    <p>© 2016 Jimwei </p>
+    <p><script>document.write("©"+ new Date().getFullYear()+" Jimwei");</script></p>
   </div>
 </div>
 </body>

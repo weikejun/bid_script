@@ -84,7 +84,7 @@ echo "</pre>";
 
 ?>
     <hr>
-    <p>© 2016 Jimwei </p>
+    <p><script>document.write("©"+ new Date().getFullYear()+" Jimwei");</script></p>
   </div>
 </div>
 </body>

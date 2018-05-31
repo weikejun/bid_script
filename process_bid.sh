@@ -4,8 +4,8 @@ cd $(dirname $0)
 source common.sh
 doLog "Start"
 
-if [ $# != 3 ];then
-	doLog "Usage: $SCRIPT [SESSION] [CAR_ID] [PAY_PASS]"
+if [ $# != 4 ];then
+	doLog "Usage: $SCRIPT [SESSION] [CAR_ID] [PAY_PASS] [AMOUNT]"
 	exit
 fi
 
@@ -16,7 +16,8 @@ fi
 
 COOKIE_FILE="cookies/$1"
 URI="/Info/T493000657/Front/InsideTwo/InsideTwo.aspx?Id="$(cat car.list|grep $2|awk -F"|" '{print $2}')
-AMOUNT=$(cat amount/$(echo $1|awk -F"_" '{print $1}'))
+AMOUNT_ALL=$(cat amount/$(echo $1|awk -F"_" '{print $1}'))
+AMOUNT=$4
 REMOTE_ADDR=$(nslookup che.zhongchoucar.com|grep Address|grep -v "#53"|awk '{print $2}')
 PAYPASS=$3
 
@@ -25,12 +26,22 @@ if [ "$URI" == "" ];then
 	exit
 fi
 
-if [ "$AMOUNT" == "" ];then
+if [ "$AMOUNT_ALL" == "" ];then
 	doLog "Session $1 get money error"
 	exit
 fi
 
-if [ "$AMOUNT" == "0.00" ];then
+if [ `echo "$AMOUNT > $AMOUNT_ALL" | bc` -eq 1 ];then
+	doLog "Session $1 money overflow"
+	exit
+fi
+
+if [ "$AMOUNT_ALL" == "0.00" ];then
+	doLog "Session $1 has not enough money"
+	exit
+fi
+
+if [ `echo "$AMOUNT_ALL < 1" | bc` -eq 1 ];then
 	doLog "Session $1 has not enough money"
 	exit
 fi
@@ -111,4 +122,5 @@ while [ 1 -eq 1 ];do
 		doLog "ContrasPan.ashx response=$RET, session=$1, car_id=$2"
 	fi
 done
+mv tigger/$2 tigger/$2.done
 doLog "Exit"

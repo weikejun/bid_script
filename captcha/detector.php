@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
   <meta charset="UTF-8">
-  <title>融抢器 - 参与账户</title>
+  <title>融抢器 - 抢标列表</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="format-detection" content="telephone=no">
@@ -31,15 +31,15 @@
 </div>
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
-    <h3>参与账户</h3>
+    <h3>抢标列表</h3>
     <hr>
     <form id="sub_form" method="post" class="am-form">
 <?php
-$file = dirname(dirname(__FILE__)).'/user.list';
+$file = dirname(dirname(__FILE__)).'/detector.list';
 $userStr = '';
-if($_POST['users']) {
-	$output = file_put_contents($file, trim($_POST['users']));
-	$userStr = trim($_POST['users']);
+if($_POST['detectors']) {
+	$output = file_put_contents($file, trim($_POST['detectors']));
+	$userStr = trim($_POST['detectors']);
 	echo "<script>alert('".($output !== false ? "success" : "failed")."');location.href = location;</script>";
 }
 else {
@@ -53,7 +53,7 @@ else {
 	}
 } 
 ?>
-      <textarea autocomplete="off" name="users" id="users"><?php echo htmlspecialchars($userStr); ?></textarea>
+      <textarea autocomplete="off" name="detectors" id="detectors"><?php echo htmlspecialchars($userStr); ?></textarea>
       <br>
       <div class="am-cf">
         <input type="submit" name="" value="提 交" class="am-btn am-btn-primary am-btn-sm am-fl">

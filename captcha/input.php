@@ -44,10 +44,11 @@
       <div id="inputs"></div>
       <div class="am-cf">
 	<br /><input type="submit" name="" value="提 交" class="am-btn am-btn-primary am-btn-sm am-fl">
+        &nbsp;&nbsp;<a href="/captcha">返回</a>
       </div>
     </form>
     <hr>
-    <p>© 2016 Jimwei </p>
+    <p><script>document.write("©"+ new Date().getFullYear()+" Jimwei");</script></p>
   </div>
 </div>
 <script src="/captcha/jquery-3.1.1.min.js"></script>
