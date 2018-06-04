@@ -30,13 +30,13 @@ for DETECTOR in $(cat detector.list|sed -r "s/\s+//g");do
         doLog "Fail, car seq '$CAR_SEQ' not found in $LIST_FILE"
         continue
     fi
-    read PASS PAYPASS < <(grep "^$USER|" user.list|awk -F'|' '{print $2,$3}')
+    read PASS PAYPASS < <(grep "^$USER|" user.list|sed -r "s/\s+//g"|awk -F'|' '{print $2,$3}')
     if [ "$PASS" == "" ];then
         doLog "Fail, user '$USER' not found in user.list"
         continue
     fi
     FILE_NAME=$(ls cookies/|egrep "^$USER"|tail -n 1)
-    ./process_bid.sh $FILE_NAME $CAR_SEQ $PAYPASS $AMOUNT &
+    ./process_bid.sh "$FILE_NAME" "$CAR_SEQ" "$PAYPASS" "$AMOUNT" &
     doLog "Success"
 done
 #ITR=0

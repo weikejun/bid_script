@@ -60,6 +60,27 @@ else {
         &nbsp;&nbsp;<a href="/captcha">返回</a>
       </div>
     </form>
+<?php
+$dir = dirname(dirname(__FILE__));
+
+echo '<pre>';
+echo '<b>[Car List]</b>'."\n";
+if(file_exists("$dir/car.list")) {
+	$lines = file("$dir/car.list");
+	foreach($lines as $line) {
+		echo $line;
+	}
+}
+echo "\n";
+echo '<b>[User List]</b>'."\n";
+if(file_exists("$dir/user.list")) {
+	$lines = file("$dir/user.list");
+	foreach($lines as $line) {
+		echo $line;
+	}
+}
+echo '</pre>';
+?>
     <hr>
     <p><script>document.write("©"+ new Date().getFullYear()+" Jimwei");</script></p>
   </div>

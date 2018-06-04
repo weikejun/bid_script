@@ -22,22 +22,24 @@ while [ 1 -eq 1 ];do
 		for CAR in $(cat $LIST_FILE); do
             read CAR_SEQ CAR_ID MONEY PROCS < <(echo $CAR|awk -F'|' '{print $1,$2,$3,$4}')
 			# 出现筹资进度20%的车通知抢标 
-            if [ "$PROCS" == "20.00" ]; then
+            if [ `echo "$PROCS <= 20.00" | bc` -eq 1 ]; then
 			# if [ "$PROCS" == "100.00" ]; then
                 NOTIFY="YES"
 				break
 			fi
 		done	
 		if [ "$NOTIFY" == "NO" ]; then
+            sleep 60
 			continue
 		fi
-		FOUND=$(date -d "$(stat $LIST_FILE|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
+		#FOUND=$(date -d "$(stat $LIST_FILE|grep -i "modify"|sed -r "s/modify:\s+//ig")" +%s)
+        FOUND=$(date +%s)
         TTS=$[3600 - $FOUND % 3600 - 60]
 		START=$[$FOUND + $TTS]
 		echo $START > $TRIGGER_FILE
 		FOUND_DATE=$(date +"%Y%m%d %H:%M:%S" -d @$FOUND)
 		START_DATE=$(date +"%Y%m%d %H:%M:%S" -d @$START)
-		MESSAGE="Car.list has created in $FOUND_DATE, robot will start in $START_DATE"
+		MESSAGE="Car.list has found in $FOUND_DATE, robot will start in $START_DATE, tts=$TTS"
 		doLog "$MESSAGE"
 
         # 邮件通知抢标既将开始
@@ -48,6 +50,9 @@ while [ 1 -eq 1 ];do
 
         # 等待准点前60秒启动监听进程
         sleep $TTS
+
+		./create_listeners.sh >> log/$NOW_DATE # 创建抢标监听进程
+
         if [ "$MAIL_LIST" != "" ];then
             MAIL=""
             for AMOUNT_FILE in $(ls amount/);do
@@ -55,8 +60,6 @@ while [ 1 -eq 1 ];do
             done
             echo "car.list ready, $(cat $LIST_FILE|wc -l) cars; "$MAIL | mail -s "[Rongche notify]Ready - from $LOCAL_IP" $MAIL_LIST
         fi
-
-		./create_listeners.sh >> log/$NOW_DATE # 创建抢标监听进程
 
         # 准点前30秒启动探测进程
         sleep 30
